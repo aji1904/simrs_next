@@ -1,12 +1,21 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+export default function Home({Rdata}) {
   return (
     <div className={styles.container}>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
+        <div>Test Api data</div>
+        {Rdata.map((Rdata) => (
+          <tr>
+            <td>{Rdata.id}</td>
+            <td>{Rdata.name}</td>
+            <td>{Rdata.username}</td>
+
+          </tr>
+        ))}
       </Head>
 
       <main className={styles.main}>
@@ -62,4 +71,19 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const Fdata = await fetch ('https://jsonplaceholder.typicode.com/users')
+  const Rdata = await Fdata.json()
+  if(!Rdata){
+    return{
+      notFound : true
+    }
+  }
+  return {
+    props: {
+      Rdata
+    }
+  };
 }
